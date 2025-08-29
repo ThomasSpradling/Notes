@@ -1,0 +1,276 @@
+\section{Fundamental Concepts}
+\subsection{Vector Spaces and Hilbert Spaces}
+\subsubsection{Inner Product Spaces}
+Recall that a \textbf{vector space} $(V, +, \cdot, \mathbb{F})$ is an Abelian group with respect to addition equipped with a scalar multiplication operation $\cdot : \mathbb{F}\times V \to V$. Scalar multiplication obeys properties
+\begin{align*}
+    \alpha(\beta v) &= (\alpha \beta) v, \\
+    \alpha (v+w) &= \alpha v + \alpha w, \\
+    (\alpha + \beta)v &= \alpha v + \beta v, \\
+    1_\mathbb{F} \cdot v &= v,
+\end{align*}
+for $\alpha, \beta \in \mathbb{F}$ and $v, w\in V$ with $1_\mathbb{F}$ the multiplicative identity of $\mathbb{F}$. Unless specified otherwise, we will be working exclusively in the case where our field is of the complex numbers, that is, $\mathbb{F} = \mathbb{C}$. A routine example of a vector space is $\C^n$ itself.
+
+We can upgrade a vector space to an \textbf{inner product space} by introducing an operation $$\langle \cdot, \cdot \rangle : V\times V \to \mathbb{C}$$
+with properties for $u, v\in V$ and $\alpha \in\mathbb{C}$,
+\begin{align*}
+    \langle u, v\rangle &= \langle v, u\rangle^*, \\
+    \langle u, v + \alpha w \rangle & = \langle u, v \rangle + \alpha \langle u, w \rangle, \\
+    u \neq 0 &\implies \langle u, u \rangle > 0. \\
+\end{align*}
+That is, the inner product is an operation that is (up to complex conjugation) symmetric, linear in its second argument, and is positive definite. An important property is that
+$$\langle \alpha u, v \rangle = \langle v, \alpha u \rangle^* = (\alpha \langle v,  u \rangle)^* = \alpha^* \langle u, v\rangle.$$
+\begin{example} Examples of inner product spaces.
+    \begin{itemize}
+        \item Let $V = \C^n$ and attach $\langle u, v \rangle = \sum_{i} u_i^* v_i$.
+        \item A more interesting example is allowing $V = L^2$:\footnote{
+            More rigorously, we take this set to be square integrable function equivalence classes where $f\sim g$ iff $f=g$ \emph{almost everywhere}. We will see this to be necessary so that the distance between two functions is zero iff those two functions are the same.
+        } The set of square-integrable functions on some fixed domain $U$,
+        $$\int_U\mathrm d x\,|f(x)|^2 < \infty.$$
+        Its inner product is given by
+        $$\langle f, g \rangle = \int_U \mathrm d x\, f^*(x) g(x).$$
+    \end{itemize}
+\end{example}
+
+\subsubsection{Hilbert Spaces}
+We may interpret any inner product space as a metric space by defining a norm
+$$\|u\| := \sqrt{\langle u, u \rangle}.$$ This gives us a distance function $d(u, v) := \|u - v\|$. A metric space is said to be \textbf{complete} if every Cauchy sequence converges: Intuitively this means there are no ``holes'' between values in the vector space. A \textbf{Hilbert space} is a vector space whose induced metric is complete.
+
+\begin{example} Complete and incomplete metrics.
+    \begin{itemize}
+        \item $\Q^n$ (over the field $\Q$) provides a simple example of a vector space whose induced metric is incomplete. This is because Cauchy sequence may approach arbitrarily close to an irrational number without actually converging to it, making $\Q^n$ not a Hilbert space.
+        \item $\C^n$ and $L^2$ both are Hilbert spaces --- ones we will be using frequently.
+    \end{itemize}  
+\end{example}
+
+\subsubsection{Dual Spaces and Dirac Notation}
+Given a vector space $V$, we may define its \textbf{dual space} $V^*$ as the set of continuous linear forms $$f : V \to \C.$$ If $V$ is an inner product space, then we may correspond any vector $v\in V$ with a natural dual vector as the map 
+$w\mapsto \langle v, w \rangle.$
+Dirac defined a simple notation to represent vectors and dual vectors for use in quantum mechanics, dubbed ``bra-ket'' notation. A vector $v\in V$ is denoted $\ket{v}$ and its corresponding dual vector is denoted $\bra{v}$. By the definition of dual vector, this means applying $\bra{v}$ to a vector $\ket{w}$ gives:
+$$\bra{v}(\ket{w}) = \langle v, w \rangle,$$
+the inner product of $\ket{v}$ and $\ket{w}$. This motivates the notation
+$$\braket{v}{w} := \bra{v}(\ket{w}) = \langle v, w \rangle.$$
+
+\begin{example} Interpretation of dual vectors.
+    \begin{itemize}
+        \item In the case $V = \C^n$, we see that $\ket{v}$ corresponds to a column vector,
+        $$\ket{v} = \begin{bmatrix}
+            v_1 \\ v_2 \\ \vdots \\ v_n
+        \end{bmatrix},$$
+        while $\bra{v}$ corresponds to a row vector,
+        $$\bra{v} = \begin{bmatrix}
+            v_1^* & v_2^* & \cdots & v_n^*
+        \end{bmatrix}.$$
+        In this case, it is easy to see that $\braket{v}{w} = \langle v, w \rangle$.
+    
+        \item If $V = L^2$, then $\ket{f}$ corresponds to a square integrable function while
+        $\bra{f}$ is an operator on another function $\ket{g}$ that integrates $f^* g$ over the domain.
+    \end{itemize}
+\end{example}
+
+\subsection{Linear Operators}
+
+A linear operator $T:V\to V$ is a function such that
+$$T\ket{v + \alpha w} = T\ket{v} + \alpha T \ket{w}.$$
+This map induces a dual operator $T^* : V^* \to V^*$ that maps $\bra{\phi}\in V^*$ as
+$$\bra{\phi} \mapsto \bra{\phi} T.$$ This gives the conjugate-linearity of $T$ on dual vectors,
+
+$$\bra{v + \alpha w} T = \bra{v}T + \alpha^* \bra{w}T.$$
+
+\begin{example}
+    Let $\{\ket{e_j}\}$ be the standard basis of $\C^n$, then we may represent a linear operator $T$ by
+    an $n\times n$ matrix. Its elements are found by considering how $T$ acts on the standard basis:
+    $$\bra{e_i} T \ket{e_j} = T_{ij}.$$ In fact, if $V$ is any finite-dimensional vector space with $\dim V = n$ then a matrix representation of a linear operator $T$ in basis $\{\ket{b_j}\}$ is
+    $$T_{ij} = \bra{b_i} T \ket{b_j}.$$
+\end{example}
+
+\subsubsection{Adjoint of an Operator}
+The \textbf{adjoint} $T^\dagger:V\to V$, if exists, of an operator $T$ is defined such that
+$$\braket{v}{Tw} = \braket{T^\dagger v}{w}.$$
+It turns out that such an operator $T^\dagger$ exists and is unique for all operators we will be considering.\footnote{
+    Turns out that if $V$ is a Hilbert space, then $T^\dagger$ always exists uniquely according to the \href{https://en.wikipedia.org/wiki/Riesz_representation_theorem}{Riesz representation theorem}.
+} Thus we formulate how $T$ transforms bras and kets as
+\begin{align*}
+    T\ket{v} &= \ket{T v}, \\
+    \bra{v} T &= \bra{T^\dagger v}.
+\end{align*}
+An operator $T$ is said to be \textbf{Hermitian} if $\braket{v}{Tw} = \braket{Tv}{ w}$ for all $v,w\in V$.\footnote{It turns out that being self-adjoint and Hermitian are not always the same if you allow $T$ to be an unbounded linear operator, but this is a common abuse of terminology.}
+
+Some useful properties of the adjoint are
+\begin{equation}
+    \begin{gathered}
+        A^\dagger + B^\dagger = (A + B)^\dagger, \\
+        (AB)^\dagger = B^\dagger A^\dagger, \\
+        (A^\dagger)^\dagger = A.
+    \end{gathered}
+\end{equation}
+
+\begin{example} In $\C^n$, if we represent an operator as a matrix, then its adjoint is just the conjugate transpose of that matrix.
+\end{example}
+
+\subsubsection{The Eigenvalue Problem}
+
+Recall the eigenvalue problem, where we want to find eigenvalues $v$ and $\ket{v}$ such that
+$$A\ket{v} = v\ket{v}.$$
+The dual of this equation is given as
+$$\bra{v} A^\dagger = v^*\bra{v}.$$
+As in the above, we will often abuse notation by using the same symbol for an eigenvalue and its eigenvector. This technically is ill-defined since anytime $\ket{v}$ is a solution, then any vector in the span of $\ket{v}$ will also be a solution. This can be fixed by taking a convention to always normalize $\ket{v}$, but that doesn't solve the problem when $v$ has a degeneracy greater than 1 (that is, when there exists multiple linearly independent eigenvectors for a given eigenvalue).
+
+\begin{theorem}
+    If $A$ is a Hermitian operator, then its eigenvalues are real and its eigenvectors corresponding to different eigenvalues are orthogonal.
+    \label{thm:hermitian-orthogonal}
+\end{theorem}
+\begin{proof}
+    Let $\ket{v},\ket{w}$ be eigenvectors of $A$ with corresponding eigenvalues $v$ and $w$. Then,
+    \begin{align*}
+        v\braket{v}{v} = \braket{v}{Av} = \braket{A v}{v} = v^*\braket{v}{v},
+    \end{align*}
+    so $v\in \R$. In addition if $v \neq w$,
+    $$w\braket{w}{v} = \braket{Aw}{v} = \braket{w}{Av} = v\braket{w}{v},$$
+    so $\braket{w}{v} = 0,$ showing orthogonality.
+\end{proof}
+
+Many important operators in quantum mechanics are Hermitian. If $V$ is finite dimensional, the space decomposes as the direct sum,
+\[
+V=\bigoplus_{\alpha} V_{\alpha},
+\]
+where $V_\alpha=\{\ket{x}\neq 0: A\ket{x}=\alpha\ket{x}\}$ is the eigenspace for eigenvalue $\alpha$, whose dimension defines the degeneracy of $\alpha$. By Theorem~\ref{thm:hermitian-orthogonal} these eigenspaces are mutually orthogonal, and choosing orthonormal bases in each $V_\alpha$ yields an orthonormal eigenbasis for $V$.
+
+For now, we will consider the case where $V$ is finite-dimensional. Consider a Hermitian $A$ with eigenbasis $\ket{a_i}$. We may write any vector $\ket{\alpha}$ as
+$$\ket{\alpha} = \sum_{i} c_{i} \ket{a_i}.$$
+By multiplying both sides by $\bra{a_i}$, we see that $c_i = \braket{a_i}{\alpha}$, so
+$$\ket{\alpha} = \sum_{i} \ket{a_i} \braket{a_i}{\alpha},$$
+which gives identity
+\begin{equation}
+    1 = \sum_i \ketbra{a_i}{a_i}.
+    \label{eqn:projection-identity}
+\end{equation}
+Intuitively, $\ketbra{a_i}{a_i}$ is a projection operator that projects any state onto basis vector $a_i$, so the identity is the result of projecting onto each basis vector and summing---this leads to no change as expected.
+
+In none of this discussion did we \emph{require} that $V$ is finite-dimensional or even of countable dimension. Let us have a continuous spectrum of eigenvectors $\ket{x}$ as in
+$$A\ket{x} = x \ket{x}.$$
+The orthonormality condition is given by $\braket{y}{x} = \delta(y - x)$ for two eigenvectors $\ket{x}$ and $\ket{y}$.
+Then any arbitrary vector may be represented by
+$$\ket{\alpha} = \int \mathrm dx\, \braket{x}{\alpha} \ket{x},$$
+and we may recover the useful property
+$$1 = \int \mathrm dx\, \ketbra{x}{x}.$$
+
+One may have noticed that $\delta(y - x) \not\in \C$ if $x = y$, so this inner product cannot be well-defined between these eigenvectors $\ket{x}$ and $\ket{y}$. This means that operating using $\ket{x}$ seems ill-defined as an eigenbasis for the Hilbert space. Strictly speaking, it in fact does not form a basis for any Hilbert space and will instead serve as a convenient tool that physicists use for calculations.\footnote{There do, however, exist formalisms to include distributions like the delta function within an extension of a Hilbert space. Such a space is called a \href{https://en.wikipedia.org/wiki/Rigged_Hilbert_space}{\emph{rigged Hilbert space}}.} That is, we may recognize any vector $\ket{\psi}$ in our Hilbert space $V$ as a continuous combination of such ``eigenvectors'' $\ket{x}$,
+$$\ket{\psi} = \int \mathrm dx\, \psi(x) \ket{x},$$
+but we should not ever view these $\ket{x}$ as members of our Hilbert space themselves. As a result, we will often adopt the notation $\psi(x) = \braket{x}{\psi}$ to emphasize that $x$ acts only as a parameterization of vectors.
+
+\subsubsection{Change of Basis}
+Let $V$ be finite-dimensional. If $A$ is Hermitian, then we've already shown that we can form a basis from eigenvectors of $A$. This is to say that $A$ is \emph{diagonalized} under this basis. That is, if we can perform a change of basis using
+$$U = [\ket{a_1} \cdots \ket{a_n}]$$
+by the transformation $A\to U^{-1} A U$. Now, since the base vectors $\{\ket{a_i}\}$ are orthonormal, $U$ is actually \textbf{unitary}, which means that $$UU^\dagger = U^\dagger U = 1.$$ Thus our change of basis transformation can be written as
+\begin{equation}
+A\to U^\dagger A U.
+\end{equation}
+
+Now if $A$ was the matrix used to form these eigenvectors then $$\bra{e_j}U^\dagger A U \ket{e_i} = \bra{a_j}A\ket{a_i} = a_i\delta_{ij},$$ so it is diagonal under this basis.
+
+\begin{theorem}
+    Let $\{\ket{a_i}\}$ and $\{\ket{b_i}\}$ both be orthonormal bases. Then there exists a unitary operator $U$ that can transform between these. The form of $U$ is
+    $$U = \sum_i \ket{b_i}\bra{a_i}.$$
+\end{theorem}
+\begin{proof}
+    The $U$ shown is unitary since
+    $$U^\dagger U = \sum_{k, l} \ket{a_k}\braket{b_k}{b_l}\bra{a_l} = \sum_k \ket{a_k}\bra{a_k} = 1,$$
+    where we have used the fact that $\ket{\alpha}\bra{\beta}^\dagger = \ket{\beta}\bra{\alpha}.$ Now, clearly $U$ transforms us from $\{\ket{a_i}\}$ to $\{\ket{b_i}\}$:
+    $$U\ket{a_k} = \sum_i \ket{b_i}\braket{a_i}{a_k} = \ket{b_k}.$$
+\end{proof}
+
+Thus any set of eigenvectors can be transformed to any other set of eigenvectors. In fact, it turns out that such a unitary change of basis does not even alter eigenvalues: Suppose $A$ and $B$ are Hermitian with eigenbases $\{a_i\}$ and $\{b_i\}$ related by a unitary transformation $U$. Then we have
+$$UAU^\dagger \ket{b_i} = UAU^\dagger U \ket{a_i} = UA\ket{a_i} = a_i U\ket{a_i} = a_i \ket{b_i}.$$
+That is $UAU^\dagger$ shares eigenvalues with $A$.
+
+\medbreak
+\noindent\textbf{Remark:}
+
+It turns out that quite a lot of interesting cases are such that $B = UAU^\dagger$. Consider for example spin angular momentum $S_x$ and $S_z$. They share eigenvalues $\pm \hbar /2$ and turn out to be related by a unitary rotation operator.
+
+We may also consider change of bases in the continuous case. Suppose we have two continuous spectra $\{\ket{x}\}$ and $\{\ket{y}\}$. Then
+$$\ket{\psi} = \int \mathrm dx\, \psi(x) \ket{x} = \int \mathrm dy\, \tilde{\psi}(y) \ket{y},$$
+where $\tilde{\psi}(y) = \braket{y}{\psi}.$ If we know $\braket{x}{y}$ (recall, here $\ket{x}$ and $\ket{y}$ are understood to be drawn for different bases), then we may arrive at a change-of-basis using
+
+\begin{equation}
+    \begin{aligned}
+    \psi(x) &= \int \mathrm dy\,\tilde{\psi}(y) \braket{x}{y}, \\ 
+    \tilde\psi(y) &= \int \mathrm dx\,\psi(x) \braket{y}{x}.
+    \end{aligned}
+    \label{eqn:wavefunction-relation}
+\end{equation}
+    
+\begin{example}
+    Consider two continuous spectra on Hilbert space $L^2$: $\{\ket{x}\}$ and $\{\ket{p}\}$. These will later correspond to position and momentum states. Their parameterizations $\psi(x) = \braket{x}{\psi}$ and $\tilde{\psi}(p) = \braket{p}{\psi}$ of a state $\psi\in L^2$ are called \emph{wavefunctions}. It will turn out that
+    $$\braket{x}{p} = \frac{1}{\sqrt{2\pi\hbar}}e^{ixp / \hbar},$$
+    so the position-space wavefunctions and momentum-space wavefunctions are related by Equation \ref{eqn:wavefunction-relation} as
+    \begin{align*}
+        \psi(x) &= \frac{1}{\sqrt{2\pi\hbar}}\int \mathrm dp\,\tilde{\psi}(p) e^{ixp / \hbar}, \\ 
+        \tilde\psi(p) &= \frac{1}{\sqrt{2\pi\hbar}}\int \mathrm dx\,\psi(x) e^{-ixp / \hbar}.
+    \end{align*}
+
+    That is, these wavefunctions are related by the Fourier transform, so position-space and momentum-space are Fourier duals of each other.
+\end{example}
+
+\subsubsection{Commuting Operators}
+Two operators $A$ and $B$ commute if $AB = BA$. To encode this information, we define the \textbf{commutator}
+$$[A, B] := AB - BA.$$
+We also define the \textbf{anti-commutator}
+$$\{A, B\} := AB + BA.$$
+
+Then operators $A$ and $B$ commute iff $[A, B] = 0.$ We should state a few useful properties of the commutator:
+\begin{equation}
+    \begin{gathered}
+        \relax
+        [A,B] = -[B,A],\\
+        [A+\alpha B,\,C] = [A,C] + \alpha [B,C], \\
+        [A, BC] = [A, B]C + B[A, C], \\
+        [A, [B, C]] + [B, [C, A]] + [C, [A, B]] = 0, \\
+        [A, B]^\dagger = [B^\dagger, A^\dagger].
+    \end{gathered}
+\end{equation}
+
+\begin{theorem}
+    If $A$ and $B$ are Hermitian and commute then $B$ is block diagonal in the eigenbasis of $A$.
+    \label{thm:simultaneous_diagonal}
+\end{theorem}
+\begin{proof}
+    We have,
+    $$0 = \bra{a_i} [A, B] \ket{a_j} = (a_i - a_j) \bra{a_i} B \ket{a_j},$$
+    so if $a_i \neq a_j$ then $\bra{a_i} B \ket{a_j} = 0$. If $a_i = a_j$ then we may have an eigenspace of dimension $d$ corresponding to this eigenvalue. We cannot guarantee these are diagonal for $B$, but this guarantees block diagonality.
+\end{proof}
+
+From Theorem \ref{thm:simultaneous_diagonal}, if $A$ is non-degenerate we have that the eigenvectors of $A$ are also eigenvectors of $B$:
+\begin{align*}
+    B\ket{a_i} &= \sum_{j, k} \ket{a_j}\bra{a_j} B \ket{a_k}\braket{a_k}{a_i} \\
+    &= \sum_{j} \ket{a_j}\bra{a_j} B \ket{a_i} \\
+    &= \bra{a_i} B \ket{a_i}\ket{a_i},
+\end{align*}
+so $\ket{a_i}$ is an eigenvector of $B$ with eigenvalue $\bra{a_i} B \ket{a_i}$. In fact, this remains true even in the presence of degeneracy, but to do this we must diagonalize $B$ which amounts to starting with the block-diagonal form that Theorem \ref{thm:simultaneous_diagonal} provides and diagonalizing each block matrix. Since $A$ is diagonal in its own basis, it is possible to diagonalize the block matrices within $B$ without affecting $A$.
+
+\subsubsection{Functions of Operators}
+Recall that if $A$ is Hermitian, then
+$$A = \sum_i a_i \ket{a_i}\bra{a_i},$$
+or in continuous case,
+$$A = \int \mathrm da\, a\ket{a}\bra{a}.$$
+Let $f:\R\to \R$ be defined for the set of eigenvalues of any operator $A$. Then we define
+$$f(A) := \sum_i f(a_i) \ket{a_i}\bra{a_i},$$
+and in continuous case
+$$f(A) := \int \mathrm da\, f(a)\ket{a}\bra{a}.$$
+
+
+\begin{example}
+    Examples of using functions of operators.
+    \begin{itemize}
+        \item Recall that if $A$ can be diagonalized as $A = U^{-1} D U$ with $D = \text{diag}(a_i)$ and $U = [u_i]$, then
+        $$A^n = U^{-1}D^n U.$$
+        This means $A^n$ has eigenvalues $a_i^n$. Our definition of functions on operators with $f(\cdot) = (\cdot)^n$ agrees here.
+        \item If $f$ has Taylor series
+        $$f(x) = \sum_{k=0}^\infty \frac{f^{(k)}(0)}{k!}x^k,$$
+        then our definition provides
+        $$f(A) = \sum_i \sum_{k=0}^\infty \frac{f^{(k)}(0)}{k!}a_i^k\ket{a_i}\bra{a_i} = \sum_{k=0}^\infty \frac{f^{(k)}(0)}{k!}A^k.$$
+    \end{itemize}
+\end{example}
+
+\subsection{Position and Momentum}
+\subsection{Wavefunctions}

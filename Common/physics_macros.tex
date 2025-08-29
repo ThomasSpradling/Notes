@@ -1,0 +1,25 @@
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+
+\newcommand{\ket}[1]{\lvert #1 \rangle}
+\newcommand{\bra}[1]{\langle #1 \rvert}
+\newcommand{\braket}[2]{\langle #1\vert#2 \rangle}
+\newcommand{\ketbra}[2]{\ket{#1}\bra{#2}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+
+\theoremstyle{definition}
+\newtheorem{example}[theorem]{Example}
+
+\BeforeBeginEnvironment{example}{%
+  \par\medskip
+  \noindent\rule{\linewidth}{0.4pt}
+}
+\AfterEndEnvironment{example}{%
+  \noindent\rule{\linewidth}{0.4pt}
+  \par\medskip
+}

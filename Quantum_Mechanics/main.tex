@@ -1,0 +1,50 @@
+\documentclass[12pt]{article} 
+\usepackage{amsmath, amsthm, amssymb, calrsfs, wasysym, verbatim, bbm, color, graphics}
+
+\usepackage{enumitem}
+\usepackage[margin=1in]{geometry}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true, allcolors=RoyalBlue]{hyperref}
+\usepackage{etoolbox}
+
+\input{../Common/physics_macros.tex}
+
+\title{Quantum Mechanics Notes}
+\author{Thomas Spradling}
+\date{}
+
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection.}{0.8em}{}
+
+\usepackage{tocloft}
+\renewcommand{\cftsecaftersnum}{.}
+
+\begin{document}
+
+\maketitle
+
+These are my notes following graduate-level quantum mechanics coursework. The main sources are:
+
+\begin{itemize}
+    \item J. J. Sakurai and J. Napolitano, \emph{Modern Quantum Mechanics}, 3rd ed. (2021).
+    \item R. Shankar, \emph{Principles of quantum mechanics}, 2nd ed. (1994).
+    \item S. Todadri, \href{https://ocw.mit.edu/courses/8-321-quantum-theory-i-fall-2017/}{Quantum Theory I (MIT OCW, 2017)}.
+    \item L. D. Landau and E. M. Lifshitz, \emph{Quantum Mechanics: Non-Relativistic Theory}, 3rd ed. (1977).
+\end{itemize}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\include{01_fundamentals}
+\include{02_dynamics}
+\include{03_angular_momentum}
+\include{04_symmetry}
+\include{05_approximation_methods}
+\include{06_identical_particles}
+\include{07_scattering}
+\include{08_quantum_computation}
+\include{09_relativistic}
+
+\end{document}
